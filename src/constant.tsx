@@ -41,6 +41,7 @@ export const PROJECTS: Project[] = [
     description: "A high-performance CLI tool to automate full-stack environment generation with pre-configured boilerplates.",
     tools: ["Node.js", "Commander.js", "Shell", "Git"],
     github: "https://github.com/UttamYadav-DGI/create-fullstack-setup",
+    link:"https://www.npmjs.com/package/create-fullstack-setup",
     highlights: [
       "Automates boilerplate generation for MERN and Next.js.",
       "Pre-configures environment variables and structures.",
