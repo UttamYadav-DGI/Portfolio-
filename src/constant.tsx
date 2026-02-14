@@ -1,6 +1,5 @@
 
-import React from 'react';
-import { Github, Linkedin, Mail, Code2, GraduationCap, Award, Briefcase, User, FileText } from 'lucide-react';
+import {Code2, GraduationCap, Award, Briefcase, User } from 'lucide-react';
 import type { Project, Achievement, SkillCategory } from './types';
 
 export const PERSONAL_INFO = {

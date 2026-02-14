@@ -5,20 +5,14 @@ import {
   Mail, 
   ChevronRight, 
   MapPin, 
-  Trophy, 
-  Star, 
-  Code2, 
-  Briefcase, 
+  Trophy,  
   GraduationCap, 
-  User,
   ArrowUpRight,
   Terminal,
   Layers,
   Globe,
-  Sparkles,
   Code,
   Phone,
-  FileText,
   Download,
   Sun,
   Moon,
@@ -27,7 +21,7 @@ import {
   Award,
   Calendar
 } from 'lucide-react';
-import { PERSONAL_INFO, PROJECTS, SKILLS, ACHIEVEMENTS, NAV_LINKS } from './constant';
+import { PERSONAL_INFO, PROJECTS, SKILLS, NAV_LINKS } from './constant';
 
 const App: React.FC = () => {
   const [isDark, setIsDark] = useState(true);
@@ -50,7 +44,7 @@ const App: React.FC = () => {
         <div className={`absolute bottom-[-10%] right-[-10%] w-[60%] h-[60%] blur-[150px] rounded-full transition-colors duration-1000 ${isDark ? 'bg-blue-600/5' : 'bg-blue-400/5'}`} />
       </div>
 
-      <div className="max-w-[1400px] mx-auto grid grid-cols-1 md:grid-cols-12 gap-6">
+      <div className="max-w-350 mx-auto grid grid-cols-1 md:grid-cols-12 gap-6">
         
         {/* Profile / Hero Section */}
         <div id="about" className="md:col-span-8 bento-card p-10 md:p-14 flex flex-col justify-between group scroll-mt-24">
@@ -86,7 +80,7 @@ const App: React.FC = () => {
                 View Gallery <ArrowUpRight size={20} className="transition-transform group-hover/btn:translate-x-1 group-hover/btn:-translate-y-1" />
               </span>
             </a>
-            <div className="flex items-center gap-4 text-zinc-500 font-mono text-sm uppercase tracking-[0.1em]">
+            <div className="flex items-center gap-4 text-zinc-500 font-mono text-sm uppercase tracking-widest">
               <MapPin size={18} className="text-violet-500" /> Noida, India
             </div>
           </div>
@@ -140,7 +134,7 @@ const App: React.FC = () => {
           </div>
           
           <div className="relative overflow-x-auto pb-6 custom-scrollbar">
-            <div className="min-w-[900px]">
+            <div className="min-w-225">
               <img 
                 src={`https://ghchart.rshah.org/green/Uttamyadav-DGI`} 
                 alt="GitHub Contribution Graph"
@@ -159,7 +153,7 @@ const App: React.FC = () => {
           </h3>
           <div className="space-y-10">
             <div className="relative pl-10 border-l-2 border-violet-500/20">
-              <div className="absolute -left-[9px] top-1.5 w-4 h-4 rounded-full bg-violet-600 shadow-[0_0_15px_rgba(139,92,246,0.5)]" />
+              <div className="absolute -left-2.25 top-1.5 w-4 h-4 rounded-full bg-violet-600 shadow-[0_0_15px_rgba(139,92,246,0.5)]" />
               <h4 className="text-xl font-black tracking-tight">B.Tech in Computer Science</h4>
               <p className="text-zinc-500 text-sm mt-1 font-medium">AKTU (DGI) • 2022 — 2026</p>
               <div className="mt-6 flex items-center gap-4">
@@ -314,7 +308,7 @@ const App: React.FC = () => {
           <a
             key={link.label}
             href={link.href}
-            className={`p-4 rounded-[1.5rem] transition-all group relative ${isDark ? 'text-zinc-500 hover:text-white hover:bg-white/5' : 'text-zinc-400 hover:text-black hover:bg-black/5'}`}
+            className={`p-4 rounded-3xl transition-all group relative ${isDark ? 'text-zinc-500 hover:text-white hover:bg-white/5' : 'text-zinc-400 hover:text-black hover:bg-black/5'}`}
           >
             <link.icon size={22} />
             <span className={`absolute -top-16 left-1/2 -translate-x-1/2 px-4 py-2 text-[10px] font-black rounded-2xl opacity-0 group-hover:opacity-100 transition-all duration-300 pointer-events-none uppercase tracking-widest shadow-2xl scale-75 group-hover:scale-100 ${isDark ? 'bg-zinc-800 text-white' : 'bg-black text-white'}`}>
@@ -322,11 +316,11 @@ const App: React.FC = () => {
             </span>
           </a>
         ))}
-        <div className={`w-[1px] h-8 mx-3 ${isDark ? 'bg-zinc-800' : 'bg-zinc-200'}`} />
+        <div className={`w-px h-8 mx-3 ${isDark ? 'bg-zinc-800' : 'bg-zinc-200'}`} />
         <a 
           href={PERSONAL_INFO.links.github} 
           target="_blank" 
-          className={`p-4 rounded-[1.5rem] transition-all ${isDark ? 'text-zinc-500 hover:text-white hover:bg-white/5' : 'text-zinc-400 hover:text-black hover:bg-black/5'}`}
+          className={`p-4 rounded-3xl transition-all ${isDark ? 'text-zinc-500 hover:text-white hover:bg-white/5' : 'text-zinc-400 hover:text-black hover:bg-black/5'}`}
         >
           <Github size={22} />
         </a>
