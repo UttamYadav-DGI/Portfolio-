@@ -185,7 +185,7 @@ const App: React.FC = () => {
               },
               { 
                 title: 'LeetCode Specialist', 
-                desc: '350+ Problems Solved', 
+                desc: '400+ Problems Solved', 
                 icon: <Code size={20} />, 
                 link: PERSONAL_INFO.links.leetcode, 
                 color: 'text-yellow-500' 
@@ -329,7 +329,7 @@ const App: React.FC = () => {
       {/* Footer */}
       <footer className="mt-40 text-center pb-24 border-t border-zinc-500/10 pt-20">
         <p className={`text-xs font-mono uppercase tracking-[0.8em] font-black ${isDark ? 'text-zinc-800' : 'text-zinc-300'}`}>
-          Uttam Yadav • Engineered in India • 2024
+          Uttam Yadav • Engineered in India • 2022-2026
         </p>
       </footer>
     </div>
