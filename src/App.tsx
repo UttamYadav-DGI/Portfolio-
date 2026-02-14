@@ -223,7 +223,7 @@ const App: React.FC = () => {
           
           <div className="mt-16 md:mt-24">
             <h1 className="text-5xl md:text-7xl lg:text-8xl font-black tracking-tight leading-[0.95]">
-              Hello, <span className="text-violet-500 italic">Uttam</span> <br />
+              I'M, <span className="text-violet-500 italic">Uttam</span> <br />
               <span className={isDark ? 'text-zinc-800' : 'text-zinc-300'}>Architecting Digital Experiences</span>
             </h1>
             <p className={`mt-10 max-w-xl text-lg md:text-xl font-normal leading-relaxed ${isDark ? 'text-zinc-500' : 'text-zinc-500'}`}>
