@@ -52,7 +52,7 @@ export const PROJECTS: Project[] = [
     title: "VideoTube",
     description: "A high-performance video-sharing platform with real-time interactions and media management.",
     tools: ["React.js", "Node.js", "Express.js", "MongoDB", "Cloudinary"],
-    github: "https://github.com/Uttamyadav-DGI",
+    github: "https://github.com/UttamYadav-DGI/videotube",
     link: "https://chai-code-backend.onrender.com/docs/",
     highlights: [
       "Secure login & role-based access with JWT.",

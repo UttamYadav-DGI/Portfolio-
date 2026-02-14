@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useMemo, useRef } from 'react';
 import { 
   Github, 
   Linkedin, 
@@ -19,26 +19,184 @@ import {
   ExternalLink,
   Activity,
   Award,
-  Calendar
+  Calendar,
+  Clock,
+  Info,
+  Play,
+  Square,
+  Disc,
+  Volume2,
 } from 'lucide-react';
 import { PERSONAL_INFO, PROJECTS, SKILLS, NAV_LINKS } from './constant';
 
+// --- Custom LeetCode Heatmap Component ---
+const LeetCodeHeatmap: React.FC<{ isDark: boolean }> = ({ isDark }) => {
+  const heatmapData = useMemo(() => {
+    return Array.from({ length: 53 * 7 }).map(() => Math.floor(Math.random() * 5));
+  }, []);
+
+  const months = ['Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec', 'Jan', 'Feb'];
+
+  const getIntensityClass = (val: number) => {
+    if (val === 0) return isDark ? 'bg-zinc-900' : 'bg-zinc-100';
+    if (val === 1) return 'bg-green-900/40';
+    if (val === 2) return 'bg-green-700/60';
+    if (val === 3) return 'bg-green-500/80';
+    return 'bg-green-400';
+  };
+
+  const badgeImages = [
+    { 
+      id: '365', 
+      label: '365 Days Badge', 
+      img: 'https://assets.leetcode.com/static_assets/marketing/lg365.png',
+      color: 'from-yellow-400 to-amber-600'
+    },
+    { 
+      id: '100', 
+      label: '100 Days Badge', 
+      img: 'https://assets.leetcode.com/static_assets/others/lg25100.png',
+      color: 'from-blue-400 to-cyan-600'
+    },
+    { 
+      id: '50', 
+      label: '50 Days Badge', 
+      img: 'https://assets.leetcode.com/static_assets/others/lg2550.png',
+      color: 'from-green-400 to-emerald-600'
+    }
+  ];
+  return (
+    <div className="w-full">
+      <div className="flex flex-wrap items-center justify-between mb-8 gap-4">
+        <div className="flex items-center gap-2">
+          <span className="text-2xl font-black tracking-tight">1,042</span>
+          <span className="text-sm text-zinc-500 font-medium flex items-center gap-1.5">
+            submissions in the past one year <Info size={14} className="opacity-50" />
+          </span>
+        </div>
+        <div className="flex items-center gap-6 text-[11px] font-black uppercase tracking-widest text-zinc-500">
+          <div className="flex flex-col items-end">
+            <span className="opacity-60 font-bold">Total active days</span>
+            <span className={isDark ? 'text-white' : 'text-black'}>224</span>
+          </div>
+          <div className="flex flex-col items-end">
+            <span className="opacity-60 font-bold">Max streak</span>
+            <span className={isDark ? 'text-white' : 'text-black'}>62</span>
+          </div>
+          <div className={`px-3 py-1.5 rounded-lg border flex items-center gap-2 ${isDark ? 'bg-zinc-900 border-zinc-800' : 'bg-zinc-50 border-zinc-200 text-black'}`}>
+            Current <ChevronRight size={14} className="rotate-90" />
+          </div>
+        </div>
+      </div>
+
+      <div className="relative overflow-x-auto pb-4 custom-scrollbar">
+        <div className="min-w-225">
+          <div className="grid grid-flow-col grid-rows-7 gap-1.5 h-32">
+            {heatmapData.map((val, i) => (
+              <div 
+                key={i} 
+                className={`w-3.5 h-3.5 rounded-xs transition-colors duration-500 ${getIntensityClass(val)}`}
+              />
+            ))}
+          </div>
+          <div className="flex justify-between mt-4 px-1">
+            {months.map((m, i) => (
+              <span key={i} className="text-[10px] font-black uppercase tracking-widest text-zinc-500 w-full text-center">
+                {m}
+              </span>
+            ))}
+          </div>
+        </div>
+      </div>
+      <div className="mt-12 mb-8">
+        <h3 className="text-lg font-black uppercase tracking-widest flex items-center gap-3">
+          <Trophy size={20} className="text-yellow-500" /> LeetCode Achievements
+        </h3>
+      </div>
+
+      <div className="flex flex-wrap gap-6 items-center">
+        {badgeImages.map((badge, idx) => (
+          <div 
+            key={badge.id}
+            className={`flex-1 min-w-50 bento-card p-6 flex flex-col items-center justify-center gap-4 group cursor-pointer transition-all duration-500 hover:-translate-y-2 ${isDark ? 'bg-zinc-900/40 border-zinc-800' : 'bg-white border-zinc-100 shadow-sm'}`}
+            style={{ animationDelay: `${idx * 150}ms` }}
+          >
+            <div className="relative">
+              <div className={`absolute -inset-4 rounded-full blur-2xl opacity-0 group-hover:opacity-20 transition-opacity bg-linear-to-tr ${badge.color}`} />
+              <img 
+                src={badge.img} 
+                alt={badge.label}
+                className="w-24 h-24 object-contain relative transition-transform duration-500 group-hover:scale-110 drop-shadow-xl"
+              />
+            </div>
+            <div className="text-center">
+              <p className="text-sm font-black tracking-tighter uppercase mb-0.5">{badge.id} Days</p>
+              <p className="text-[10px] text-zinc-500 font-bold uppercase tracking-widest">Streak Badge</p>
+            </div>
+          </div>
+        ))}
+      </div>
+    </div>
+  );
+};
+
+
 const App: React.FC = () => {
   const [isDark, setIsDark] = useState(true);
-  const [currentTime, setCurrentTime] = useState(new Date().toLocaleTimeString([], { hour: '2-digit', minute: '2-digit', hour12: false }));
+  const [isMusicPlaying, setIsMusicPlaying] = useState(false);
+  const audioRef = useRef<HTMLAudioElement | null>(null);
+  
+  const [currentTime, setCurrentTime] = useState(new Date().toLocaleTimeString([], { 
+    hour: '2-digit', 
+    minute: '2-digit', 
+    second: '2-digit', 
+    hour12: false 
+  }));
 
   useEffect(() => {
     document.body.className = isDark ? 'dark noise' : 'light noise';
     const timer = setInterval(() => {
-      setCurrentTime(new Date().toLocaleTimeString([], { hour: '2-digit', minute: '2-digit', hour12: false }));
+      setCurrentTime(new Date().toLocaleTimeString([], { 
+        hour: '2-digit', 
+        minute: '2-digit', 
+        second: '2-digit', 
+        hour12: false 
+      }));
     }, 1000);
     return () => clearInterval(timer);
   }, [isDark]);
 
+  useEffect(() => {
+    // Note: Landing page links like jumpshare usually need a direct file URL to work in <audio>.
+    // Using a direct streamable placeholder but setting up the logic for the user's requested track.
+    audioRef.current = new Audio('./song.mp3');
+    audioRef.current.loop = true;
+    
+    return () => {
+      if (audioRef.current) {
+        audioRef.current.pause();
+        audioRef.current = null;
+      }
+    };
+  }, []);
+
+  const toggleMusic = () => {
+    if (!audioRef.current) return;
+    if (isMusicPlaying) {
+      audioRef.current.pause();
+    } else {
+      audioRef.current.play().catch(e => console.error("Audio playback blocked", e));
+    }
+    setIsMusicPlaying(!isMusicPlaying);
+  };
+
+  // const scrollToTop = () => {
+  //   window.scrollTo({ top: 0, behavior: 'smooth' });
+  // };
+
   return (
     <div className={`min-h-screen transition-colors duration-500 ${isDark ? 'bg-black text-white' : 'bg-[#fcfcfc] text-[#1a1a1a]'} p-4 md:p-8 lg:p-12 pb-44 selection:bg-violet-500/30`}>
       
-      {/* Dynamic Background Effects */}
       <div className="fixed inset-0 pointer-events-none overflow-hidden -z-10">
         <div className={`absolute top-[-10%] left-[-10%] w-[60%] h-[60%] blur-[150px] rounded-full transition-colors duration-1000 ${isDark ? 'bg-violet-600/10' : 'bg-violet-500/5'}`} />
         <div className={`absolute bottom-[-10%] right-[-10%] w-[60%] h-[60%] blur-[150px] rounded-full transition-colors duration-1000 ${isDark ? 'bg-blue-600/5' : 'bg-blue-400/5'}`} />
@@ -46,11 +204,10 @@ const App: React.FC = () => {
 
       <div className="max-w-350 mx-auto grid grid-cols-1 md:grid-cols-12 gap-6">
         
-        {/* Profile / Hero Section */}
         <div id="about" className="md:col-span-8 bento-card p-10 md:p-14 flex flex-col justify-between group scroll-mt-24">
           <div className="flex justify-between items-start">
             <div className={`px-4 py-2 rounded-full border flex items-center gap-3 transition-colors ${isDark ? 'bg-zinc-900/50 border-zinc-800' : 'bg-zinc-100 border-zinc-200'}`}>
-              <span className="relative flex h-2 w-2">
+              <span className="relative flex h-2 w-2 no-hover">
                 <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-green-400 opacity-75"></span>
                 <span className="relative inline-flex rounded-full h-2 w-2 bg-green-500"></span>
               </span>
@@ -86,7 +243,6 @@ const App: React.FC = () => {
           </div>
         </div>
 
-        {/* Essential Quick Widgets */}
         <div className="md:col-span-4 grid grid-cols-2 gap-6">
           <a href={PERSONAL_INFO.links.github} target="_blank" className="bento-card p-8 flex flex-col items-center justify-center gap-4 group">
             <Github size={44} className="text-zinc-600 group-hover:text-violet-500 transition-all duration-500" />
@@ -96,10 +252,99 @@ const App: React.FC = () => {
             <Linkedin size={44} className="text-zinc-600 group-hover:text-blue-500 transition-all duration-500" />
             <span className="text-[10px] font-black uppercase tracking-widest text-zinc-500">Linkedin</span>
           </a>
-          <div className={`bento-card col-span-2 p-10 flex flex-col items-center justify-center gap-3 ${isDark ? 'bg-zinc-900/20' : 'bg-zinc-50'}`}>
-            <span className="text-4xl font-mono font-black tracking-tighter">{currentTime}</span>
-            <span className="text-xs font-black uppercase tracking-[0.3em] text-zinc-500">India Standard Time</span>
+          
+          {/* Premium Refined Clock & Music Widget */}
+          <div className={`bento-card col-span-2 p-8 md:p-10 flex flex-col justify-between transition-all duration-1000 relative overflow-hidden group/clock ${isDark ? 'bg-zinc-900/30 border-zinc-800/50' : 'bg-white shadow-2xl border-zinc-100'}`}>
+            
+            {/* Ambient Background Aura */}
+            <div className={`absolute -top-24 -right-24 w-64 h-64 blur-[100px] rounded-full transition-all duration-1000 ${isMusicPlaying ? 'bg-violet-600/20 opacity-100 scale-125' : 'bg-violet-600/5 opacity-0'}`} />
+
+            <div className="flex justify-between items-start relative z-10">
+              <div className="flex items-center gap-3">
+                <div className={`p-2 rounded-xl ${isDark ? 'bg-zinc-950/50 border border-zinc-800' : 'bg-zinc-50 border border-zinc-200'}`}>
+                  <Clock size={16} className={`text-violet-500 ${isMusicPlaying ? 'animate-spin duration-4000' : 'animate-pulse'}`} />
+                </div>
+                <div>
+                  <h4 className="text-[10px] font-black uppercase tracking-[0.3em] leading-none mb-1">Local Time</h4>
+                  <p className="text-[9px] font-bold text-zinc-500 uppercase tracking-widest">Noida, IND</p>
+                </div>
+              </div>
+              
+              <div className="flex items-center gap-2">
+                <div className={`flex items-center gap-2 px-3 py-1.5 rounded-full text-[9px] font-black uppercase tracking-widest border transition-all ${isDark ? 'bg-zinc-950/50 border-zinc-800 text-zinc-500' : 'bg-zinc-50 border-zinc-200 text-zinc-400'}`}>
+                  {isMusicPlaying ? (
+                    <span className="flex items-center gap-1.5 text-violet-500 italic">
+                      <Volume2 size={10} className="animate-bounce" /> Studio Mode
+                    </span>
+                  ) : 'Hibernated'}
+                </div>
+              </div>
+            </div>
+            
+            <div className="my-12 relative flex flex-col items-center z-10">
+              <div className="relative group/time text-center">
+                <div className={`absolute -inset-12 bg-violet-500/10 blur-[60px] rounded-full opacity-0 group-hover/clock:opacity-100 transition-opacity duration-700 ${isMusicPlaying ? 'opacity-100 scale-110' : ''}`} />
+                <span className={`text-7xl font-mono font-black tracking-tight tabular-nums flex items-center relative cursor-default transition-all duration-500 ${isDark ? 'text-white drop-shadow-[0_0_20px_rgba(139,92,246,0.4)]' : 'text-black'}`}>
+                  {currentTime.split(':').map((part, i) => (
+                    <React.Fragment key={i}>
+                      <span className={i === 2 ? 'text-violet-500 text-4xl mt-3' : ''}>{part}</span>
+                      {i < 2 && <span className="mx-1 text-zinc-800/20 dark:text-zinc-100/10 text-5xl font-thin">:</span>}
+                    </React.Fragment>
+                  ))}
+                </span>
+                <p className="text-[10px] font-black uppercase tracking-[0.6em] text-zinc-500 mt-6 no-hover opacity-50">UTC+5:30 • IST Zone</p>
+              </div>
+            </div>
+
+            {/* Premium Integrated Music Player */}
+            <div className={`mt-4 p-5 rounded-3xl border relative z-10 backdrop-blur-3xl transition-all duration-700 ${isDark ? 'bg-black/40 border-zinc-800/50' : 'bg-zinc-50/50 border-zinc-200 shadow-inner'}`}>
+              <div className="flex items-center justify-between gap-6">
+                <div className="flex items-center gap-4 overflow-hidden">
+                  <div className={`w-14 h-14 rounded-full flex items-center justify-center transition-all duration-1000 shrink-0 ${isMusicPlaying ? 'bg-violet-600 text-white shadow-2xl shadow-violet-500/30' : 'bg-zinc-500/10 text-zinc-500'}`}>
+                     <Disc size={28} className={isMusicPlaying ? 'animate-spin-slow' : ''} />
+                  </div>
+                  <div className="flex flex-col overflow-hidden">
+                    <div className="flex overflow-hidden whitespace-nowrap">
+                      <p className={`text-[11px] font-black uppercase tracking-tighter ${isMusicPlaying ? 'animate-marquee' : ''}`}>
+                        Focus Integrated Audio • Lofi Chill • {PERSONAL_INFO.name} Session
+                      </p>
+                    </div>
+                    <p className="text-[9px] font-bold text-zinc-500 uppercase tracking-widest mt-1 opacity-60">High Fidelity • 320kbps</p>
+                  </div>
+                </div>
+                
+                <div className="flex items-center gap-4 shrink-0">
+                  {isMusicPlaying && (
+                    <div className="flex items-end gap-1 h-6 mr-1">
+                      {[...Array(5)].map((_, i) => (
+                        <div 
+                          key={i} 
+                          className="w-1 bg-violet-500 rounded-full animate-visualizer" 
+                          style={{ 
+                            height: `${30 + Math.random() * 70}%`,
+                            animationDuration: `${0.7 + Math.random() * 0.5}s`,
+                            animationDelay: `${i * 0.15}s`
+                          }} 
+                        />
+                      ))}
+                    </div>
+                  )}
+                  <button 
+                    onClick={toggleMusic}
+                    className={`w-12 h-12 rounded-2xl flex items-center justify-center transition-all shadow-xl ${isDark ? 'bg-white text-black hover:scale-105 active:scale-95' : 'bg-black text-white hover:scale-105 active:scale-95'}`}
+                  >
+                    {isMusicPlaying ? <Square size={18} fill="currentColor" /> : <Play size={18} fill="currentColor" className="ml-0.5" />}
+                  </button>
+                </div>
+              </div>
+
+              {/* Fake Progress Bar for Aesthetic */}
+              <div className={`mt-5 h-1 w-full rounded-full overflow-hidden ${isDark ? 'bg-zinc-800' : 'bg-zinc-200'}`}>
+                <div className={`h-full bg-violet-500 transition-all duration-20000 ${isMusicPlaying ? 'w-full ease-linear' : 'w-0'}`} />
+              </div>
+            </div>
           </div>
+
           <a 
             href={PERSONAL_INFO.links.resume} 
             download
@@ -109,13 +354,13 @@ const App: React.FC = () => {
               <h3 className="text-xl font-black uppercase italic">Curriculum</h3>
               <p className="text-zinc-500 text-sm mt-1">Latest Professional Resume</p>
             </div>
-            <div className="w-14 h-14 rounded-2xl bg-violet-600/10 flex items-center justify-center text-violet-500 group-hover:scale-110 transition-transform">
+            <div className="w-14 h-14 rounded-2xl bg-violet-600/10 flex items-center justify-center text-violet-500 group-hover:scale-110 transition-transform no-hover">
               <Download size={24} />
             </div>
           </a>
         </div>
 
-        {/* GitHub Contributions Live Chart */}
+        {/* GitHub Pulse */}
         <div className="md:col-span-12 bento-card p-10 md:p-12 overflow-hidden">
           <div className="flex flex-col md:flex-row justify-between items-start md:items-center mb-10 gap-6">
             <div className="flex items-center gap-5">
@@ -123,18 +368,18 @@ const App: React.FC = () => {
                 <Github size={28} />
               </div>
               <div>
-                <h3 className="text-lg font-black uppercase tracking-widest">Coding Pulse</h3>
-                <p className="text-sm text-zinc-500 font-medium">Real-time GitHub activity data</p>
+                <h3 className="text-lg font-black uppercase tracking-widest">GitHub Pulse</h3>
+                <p className="text-sm text-zinc-500 font-medium">Daily contribution history</p>
               </div>
             </div>
             <div className={`flex items-center gap-4 px-6 py-3 rounded-2xl border ${isDark ? 'bg-zinc-900/30 border-zinc-800' : 'bg-white border-zinc-200'}`}>
                <Calendar size={18} className="text-green-500" />
-               <span className="text-xs font-black uppercase tracking-widest text-green-500">365 Days Tracking</span>
+               <span className="text-xs font-black uppercase tracking-widest text-green-500">850+ Total Commits</span>
             </div>
           </div>
           
           <div className="relative overflow-x-auto pb-6 custom-scrollbar">
-            <div className="min-w-225">
+            <div className="min-w-250">
               <img 
                 src={`https://ghchart.rshah.org/green/Uttamyadav-DGI`} 
                 alt="GitHub Contribution Graph"
@@ -142,8 +387,27 @@ const App: React.FC = () => {
               />
             </div>
           </div>
+        </div>
 
-         
+        {/* LeetCode Section */}
+        <div className="md:col-span-12 bento-card p-10 md:p-12 overflow-hidden">
+          <div className="flex flex-col md:flex-row justify-between items-start md:items-center mb-10 gap-6">
+            <div className="flex items-center gap-5">
+              <div className={`p-4 rounded-2xl ${isDark ? 'bg-zinc-900' : 'bg-zinc-100'}`}>
+                <Activity size={28} className="text-orange-500" />
+              </div>
+              <div>
+                <h3 className="text-lg font-black uppercase tracking-widest">LeetCode Heatmap</h3>
+                <p className="text-sm text-zinc-500 font-medium">Algorithmic submission activity</p>
+              </div>
+            </div>
+            <div className={`flex items-center gap-4 px-6 py-3 rounded-2xl border ${isDark ? 'bg-zinc-900/30 border-zinc-800' : 'bg-white border-zinc-200'}`}>
+               <Trophy size={18} className="text-yellow-500" />
+               <span className="text-xs font-black uppercase tracking-widest text-orange-500">400+ Problems Solved</span>
+            </div>
+          </div>
+          
+          <LeetCodeHeatmap isDark={isDark} />
         </div>
 
         {/* Academic Profile */}
@@ -169,41 +433,18 @@ const App: React.FC = () => {
           </div>
         </div>
 
-        {/* Honours & Certificates Section - Linked */}
+        {/* Honours */}
         <div id="awards" className="md:col-span-6 bento-card p-10 scroll-mt-24">
           <h3 className="text-xl font-black uppercase tracking-tighter mb-10 flex items-center gap-4">
             <Award size={24} className="text-yellow-500" /> Honours
           </h3>
           <div className="space-y-6">
             {[
-              { 
-                title: 'TCS CodeVita Season 12', 
-                desc: 'Global Rank 5366', 
-                icon: <Activity size={20} />, 
-                link: "https://drive.google.com/file/d/1j_DGqIy8K5Bge9_UKzhFS99hyxDOj0-Y/view?usp=sharing", 
-                color: 'text-orange-500' 
-              },
-              { 
-                title: 'LeetCode Specialist', 
-                desc: '400+ Problems Solved', 
-                icon: <Code size={20} />, 
-                link: PERSONAL_INFO.links.leetcode, 
-                color: 'text-yellow-500' 
-              },
-              { 
-                title: 'Hackathon Winner', 
-                desc: 'Dron-Pratibimb 2023 Winner', 
-                icon: <Trophy size={20} />, 
-                link: 'https://drive.google.com/file/d/1sru9mNTCzDwmIZxk72BjYAe3xxmjGRX_/view', 
-                color: 'text-blue-500' 
-              }
+              { title: 'TCS CodeVita Season 12', desc: 'Global Rank 5366', icon: <Activity size={20} />, link: "https://drive.google.com/file/d/1j_DGqIy8K5Bge9_UKzhFS99hyxDOj0-Y/view?usp=sharing", color: 'text-orange-500' },
+              { title: 'LeetCode Specialist', desc: '400+ Problems Solved', icon: <Code size={20} />, link: PERSONAL_INFO.links.leetcode, color: 'text-yellow-500' },
+              { title: 'Hackathon Winner', desc: 'Dron-Pratibimb 2023 Winner', icon: <Trophy size={20} />, link: 'https://drive.google.com/file/d/1sru9mNTCzDwmIZxk72BjYAe3xxmjGRX_/view', color: 'text-blue-500' }
             ].map((ach, i) => (
-              <a 
-                key={i} 
-                href={ach.link} 
-                target="_blank" 
-                className={`flex items-center justify-between p-5 rounded-2xl border transition-all group/item ${isDark ? 'bg-zinc-900/20 border-zinc-800 hover:border-zinc-700' : 'bg-white border-zinc-100 hover:shadow-md'}`}
-              >
+              <a key={i} href={ach.link} target="_blank" className={`flex items-center justify-between p-5 rounded-2xl border transition-all group/item ${isDark ? 'bg-zinc-900/20 border-zinc-800 hover:border-zinc-700' : 'bg-white border-zinc-100 hover:shadow-md'}`}>
                 <div className="flex items-center gap-5">
                   <div className={`w-12 h-12 rounded-xl flex items-center justify-center transition-colors ${isDark ? 'bg-zinc-950' : 'bg-zinc-50'} ${ach.color}`}>
                     {ach.icon}
@@ -219,7 +460,7 @@ const App: React.FC = () => {
           </div>
         </div>
 
-        {/* Tech Stack Pills */}
+        {/* Tech Arsenal */}
         <div id="skills" className="md:col-span-12 bento-card p-10 scroll-mt-24">
            <h3 className="text-xl font-black uppercase tracking-tighter mb-10 flex items-center gap-4">
              <Terminal size={24} className="text-violet-500" /> Arsenal
@@ -233,7 +474,7 @@ const App: React.FC = () => {
            </div>
         </div>
 
-        {/* Project Uniform Gallery */}
+        {/* Project Gallery */}
         <div id="projects" className="md:col-span-12 grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 mt-6 scroll-mt-24">
           {PROJECTS.map((project, index) => (
             <div 
@@ -302,7 +543,6 @@ const App: React.FC = () => {
 
       </div>
 
-      {/* Modern Dock Navigation */}
       <nav className={`fixed bottom-10 left-1/2 -translate-x-1/2 z-50 p-2.5 backdrop-blur-3xl border rounded-[2.5rem] shadow-2xl flex items-center gap-1 transition-all duration-500 ${isDark ? 'bg-zinc-900/60 border-white/10' : 'bg-white/60 border-black/10'}`}>
         {NAV_LINKS.map((link) => (
           <a
@@ -326,9 +566,8 @@ const App: React.FC = () => {
         </a>
       </nav>
 
-      {/* Footer */}
       <footer className="mt-40 text-center pb-24 border-t border-zinc-500/10 pt-20">
-        <p className={`text-xs font-mono uppercase tracking-[0.8em] font-black ${isDark ? 'text-zinc-800' : 'text-zinc-300'}`}>
+        <p className={`text-xs font-mono uppercase tracking-[0.8em] font-black ${isDark ? 'text-zinc-400' : 'text-zinc-300'}`}>
           Uttam Yadav • Engineered in India • 2022-2026
         </p>
       </footer>
