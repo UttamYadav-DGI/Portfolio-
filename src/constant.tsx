@@ -49,6 +49,18 @@ export const PROJECTS: Project[] = [
     ]
   },
   {
+    title: "KisanSetu",
+    description: "Empowering farmers with a multi-lingual platform for crop data and AI support.",
+    tools: ["React.js", "Node.js", "Express.js", "MongoDB", "AI Chatbot"],
+    github: "https://github.com/UttamYadav-DGI/kishanSetu",
+    link: "https://kishan-setu-8yif.vercel.app/",
+    highlights: [
+      "AI-powered chatbot for instant query resolution.",
+      "Integrated land record data (Bhulekh, Khatoni).",
+      "Multi-language support for improved accessibility."
+    ]
+  },
+  {
     title: "VideoTube",
     description: "A high-performance video-sharing platform with real-time interactions and media management.",
     tools: ["React.js", "Node.js", "Express.js", "MongoDB", "Cloudinary"],
@@ -60,20 +72,6 @@ export const PROJECTS: Project[] = [
       "Responsive UI with dark mode support."
     ]
   },
-
-
-  {
-    title: "KisanSetu",
-    description: "Empowering farmers with a multi-lingual platform for crop data and AI support.",
-    tools: ["React.js", "Node.js", "Express.js", "MongoDB", "AI Chatbot"],
-    github: "https://github.com/UttamYadav-DGI/kishanSetu",
-    link: "https://kishan-setu-8yif.vercel.app/",
-    highlights: [
-      "AI-powered chatbot for instant query resolution.",
-      "Integrated land record data (Bhulekh, Khatoni).",
-      "Multi-language support for improved accessibility."
-    ]
-  }
 ];
 
 export const ACHIEVEMENTS: Achievement[] = [
