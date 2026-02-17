@@ -396,7 +396,7 @@ const App: React.FC = () => {
                 <div className={`h-2 flex-1 rounded-full overflow-hidden ${isDark ? 'bg-zinc-900' : 'bg-zinc-100'}`}>
                   <div className="w-[72%] h-full bg-violet-600 rounded-full group-hover:w-[75%] transition-all duration-1000" />
                 </div>
-                <span className="text-sm font-mono font-black text-violet-500">7.2 GPA</span>
+                <span className="text-sm font-mono font-black text-violet-500">7.5 CGPA</span>
               </div>
             </div>
           </div>
