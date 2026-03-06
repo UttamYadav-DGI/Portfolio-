@@ -334,7 +334,7 @@ const App: React.FC = () => {
             </div>
             <div className={`flex items-center gap-4 px-6 py-3 rounded-2xl border transition-all group-hover:scale-105 ${isDark ? 'bg-zinc-900/30 border-zinc-800' : 'bg-white border-zinc-200'}`}>
                <Calendar size={18} className="text-green-500 animate-pulse" />
-               <span className="text-xs font-black uppercase tracking-widest text-green-500">850+ Total Commits</span>
+               <span className="text-xs font-black uppercase tracking-widest text-green-500">170+ Total Commits</span>
             </div>
           </div>
           <div className="relative overflow-x-auto pb-6 custom-scrollbar no-hover">
