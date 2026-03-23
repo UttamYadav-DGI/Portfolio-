@@ -309,7 +309,7 @@ const App: React.FC = () => {
             </div>
           </div>
 
-          <a href={PERSONAL_INFO.links.resume} download className={`col-span-2 bento-card p-10 flex items-center justify-between group`}>
+          <a href={PERSONAL_INFO.links.resume} target="_blank" download className={`col-span-2 bento-card p-10 flex items-center justify-between group`}>
             <div>
               <h3 className="text-xl font-black uppercase italic group-hover:text-violet-500 transition-colors">Curriculum</h3>
               <p className="text-zinc-500 text-sm mt-1">Download Resume</p>
@@ -324,7 +324,7 @@ const App: React.FC = () => {
         <div className="md:col-span-12 bento-card p-10 md:p-12 overflow-hidden group">
           <div className="flex flex-col md:flex-row justify-between items-start md:items-center mb-10 gap-6 no-hover">
             <div className="flex items-center gap-5">
-              <div className={`p-4 rounded-2xl transition-all group-hover:bg-zinc-800 ${isDark ? 'bg-zinc-900' : 'bg-zinc-100'}`}>
+              <div className={`p-4 rounded-2xl transition-all group-hover:bg-zinc-500 ${isDark ? 'bg-zinc-900' : 'bg-zinc-100'}`}>
                 <Github size={28} className="group-hover:rotate-12 transition-transform" />
               </div>
               <div>
