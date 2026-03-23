@@ -475,7 +475,7 @@ const App: React.FC = () => {
         {/* Action Center */}
         <div className={`md:col-span-12 bento-card p-16 md:p-32 text-center mt-6 relative overflow-hidden group ${isDark ? 'bg-zinc-950 text-white' : 'bg-black text-white'}`}>
            <h2 className="text-6xl md:text-9xl font-black tracking-tighter leading-[0.8] mb-16 select-none transition-all group-hover:scale-110 group-hover:tracking-normal duration-1000">
-              LET'S <br /> <span className="text-violet-500 italic hover:text-white transition-colors">INITIATE.</span>
+              LET'S <br /> <span className="text-violet-500 italic hover:text-shadow-indigo-50 transition-colors">INITIATE.</span>
            </h2>
            <div className="flex flex-col sm:flex-row items-center justify-center gap-6 w-full max-w-2xl mx-auto relative z-10 no-hover">
               <a href={`mailto:${PERSONAL_INFO.email}`} className="w-full sm:w-auto px-16 py-8 bg-white text-black rounded-3xl font-black text-sm uppercase tracking-widest hover:bg-zinc-200 hover:-translate-y-2 active:scale-95 transition-all shadow-2xl flex items-center justify-center gap-4">
