@@ -12,7 +12,7 @@ export const PERSONAL_INFO = {
     linkedin: "https://www.linkedin.com/in/uttam-yadav-01b629256/",
     github: "https://github.com/Uttamyadav-DGI",
     leetcode: "https://leetcode.com/UttamYadav",
-    resume: "https://drive.google.com/file/d/14VkDPH8iU-8Vea4lFXPVebfjcrtryc_M/view?usp=sharing"
+    resume: "https://drive.google.com/file/d/18apRoYt28Y7bzooNGUFIjWNQQkr3JqmJ/view?usp=sharing"
   }
 };
 
